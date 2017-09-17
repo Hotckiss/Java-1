@@ -32,6 +32,7 @@ public class KeyValuePairTest {
     @Test
     public void testGetKey() throws Exception {
         kvp = new KeyValuePair("a", "b");
+        
         assertEquals(kvp.getKey(), "a");
     }
 
@@ -42,6 +43,7 @@ public class KeyValuePairTest {
     @Test
     public void getValue() throws Exception {
         kvp = new KeyValuePair("a", "b");
+        
         assertEquals(kvp.getValue(), "b");
     }
 
@@ -53,6 +55,7 @@ public class KeyValuePairTest {
     public void setNewValue() throws Exception {
         kvp = new KeyValuePair("a", "b");
         kvp.setNewValue("qqf");
+        
         assertEquals(kvp.getValue(), "qqf");
     }
 }
