@@ -5,7 +5,7 @@
  */
 package ru.spbau.kirilenko.hw1;
 
-public class HashTable implements KeyValueStorage{
+public class HashTable implements KeyValueStorage {
     private LinkedList[] cells;
     private int size = 0;
 
