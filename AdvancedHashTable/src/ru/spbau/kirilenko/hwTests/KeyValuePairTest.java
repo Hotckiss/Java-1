@@ -1,7 +1,7 @@
-package ru.spbau.kirilenko.hw2;
+package ru.spbau.kirilenko.hwTests;
 
 import org.junit.Test;
-
+import ru.spbau.kirilenko.hw2.KeyValuePair;
 import static org.junit.Assert.assertEquals;
 
 public class KeyValuePairTest {
@@ -9,7 +9,6 @@ public class KeyValuePairTest {
 
     /**
      * Tests default constructor of the pair
-     * @throws Exception
      */
     @Test
     public void testConstructor1() throws Exception {
@@ -18,7 +17,6 @@ public class KeyValuePairTest {
 
     /**
      * Tests constructor of the pair from two strings
-     * @throws Exception
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructor2() throws Exception {
@@ -27,35 +25,29 @@ public class KeyValuePairTest {
 
     /**
      * Tests get key from the pair
-     * @throws Exception
      */
     @Test
     public void testGetKey() throws Exception {
         kvp = new KeyValuePair("a", "b");
-        
         assertEquals(kvp.getKey(), "a");
     }
 
     /**
      * Tests get value from the pair
-     * @throws Exception
      */
     @Test
     public void getValue() throws Exception {
         kvp = new KeyValuePair("a", "b");
-        
         assertEquals(kvp.getValue(), "b");
     }
 
     /**
      * Tests set new value of the pair
-     * @throws Exception
      */
     @Test
     public void setNewValue() throws Exception {
         kvp = new KeyValuePair("a", "b");
         kvp.setNewValue("qqf");
-        
         assertEquals(kvp.getValue(), "qqf");
     }
 }

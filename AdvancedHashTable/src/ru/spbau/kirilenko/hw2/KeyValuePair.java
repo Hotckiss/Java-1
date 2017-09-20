@@ -22,7 +22,7 @@ public class KeyValuePair {
      * @throws IllegalArgumentException if null key input
      */
     public KeyValuePair(String key, String value) {
-        if(key == null) {
+        if (key == null) {
             throw new IllegalArgumentException("Bad key.");
         }
         this.key = key;

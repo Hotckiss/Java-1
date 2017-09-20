@@ -4,9 +4,16 @@ package ru.spbau.kirilenko.hw2;
  * A class representing an extendable hash table of strings with keys of strings
  */
 
-public class HashTable implements KeyValueStorage{
+public class HashTable implements KeyValueStorage {
     private LinkedList[] cells;
     private int size = 0;
+
+    /**
+     * Build empty HashTable with 32 cells
+     */
+    public HashTable() {
+        this(32);
+    }
 
     /**
      * Build empty HashTable
@@ -16,13 +23,13 @@ public class HashTable implements KeyValueStorage{
      * @param size number of cells in the HashTable
      */
     public HashTable(int size) {
-        if(size <= 0) {
+        if (size <= 0) {
             throw new IllegalArgumentException("Too small size.");
         }
 
         cells = new LinkedList[size];
 
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             cells[i] = new LinkedList();
         }
     }
@@ -46,18 +53,18 @@ public class HashTable implements KeyValueStorage{
      * @return previous string connected with that key in the HashTable, null if key was not in the list
      */
     public String put(String key, String value) {
-        if(key == null) {
+        if (key == null) {
             throw new IllegalArgumentException("Bad key.");
         }
 
-        if(cells.length == size) {
+        if (cells.length == size) {
             reinitialize();
         }
 
         int hash = getHash(key);
-        int sizeCell = cells[hash].size();
         String previousValue = cells[hash].put(key, value);
-        size += (cells[hash].size() - sizeCell);
+        if (previousValue == null)
+            size++;
 
         return previousValue;
     }
@@ -71,7 +78,7 @@ public class HashTable implements KeyValueStorage{
      * @return string connected with that key in the HashTable
      */
     public String get(String key) {
-        if(key == null) {
+        if (key == null) {
             throw new IllegalArgumentException("Bad key.");
         }
 
@@ -89,7 +96,7 @@ public class HashTable implements KeyValueStorage{
      * @return true if key is stored in the HashTable, false otherwise
      */
     public boolean contains(String key) {
-        if(key == null) {
+        if (key == null) {
             throw new IllegalArgumentException("Bad key.");
         }
 
@@ -102,8 +109,8 @@ public class HashTable implements KeyValueStorage{
      * Delete all elements from structure
      */
     public void clear() {
-        for(int i = 0; i < cells.length; i++) {
-            cells[i].clear();
+        for (LinkedList cell : cells) {
+            cell.clear();
         }
 
         size = 0;
@@ -118,14 +125,14 @@ public class HashTable implements KeyValueStorage{
      * @return string connected with that key in the HashTable
      */
     public String remove(String key) {
-        if(key == null) {
+        if (key == null) {
             throw new IllegalArgumentException("Bad key.");
         }
 
         int hash = getHash(key);
-        int sizeCell = cells[hash].size();
         String previousValue = cells[hash].remove(key);
-        size += (cells[hash].size() - sizeCell);
+        if (previousValue != null)
+            size--;
 
         return previousValue;
     }
@@ -138,14 +145,14 @@ public class HashTable implements KeyValueStorage{
         LinkedList[] oldCells = cells;
         cells = new LinkedList[oldCells.length * 2];
 
-        for(int i = 0; i < cells.length; i++) {
+        for (int i = 0; i < cells.length; i++) {
             cells[i] = new LinkedList();
         }
 
-        for(int i = 0; i < oldCells.length; i++) {
-            while(true) {
+        for (int i = 0; i < oldCells.length; i++) {
+            while (true) {
                 KeyValuePair kvp = oldCells[i].popFront();
-                if(kvp == null) {
+                if (kvp == null) {
                     break;
                 }
                 cells[getHash(kvp.getKey())].put(kvp.getKey(), kvp.getValue());

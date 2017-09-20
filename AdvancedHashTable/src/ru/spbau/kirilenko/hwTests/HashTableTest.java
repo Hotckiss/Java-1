@@ -1,7 +1,8 @@
-package ru.spbau.kirilenko.hw2;
+package ru.spbau.kirilenko.hwTests;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.spbau.kirilenko.hw2.HashTable;
 import static org.junit.Assert.*;
 
 public class HashTableTest {
@@ -9,17 +10,23 @@ public class HashTableTest {
     private HashTable hashTable;
 
     /**
-     * Tests constructor of hashTable
-     * @throws Exception
+     * Create HashTable for tests
      */
     @Before
-    public void testConstructorOk() throws Exception {
+    public void createHashTableForTesting() throws Exception {
         hashTable = new HashTable(30);
     }
 
     /**
+     * Test correctness of constructor
+     */
+    @Test
+    public void testConstructor() throws Exception {
+        hashTable = new HashTable(17);
+    }
+
+    /**
      * Tests size of hashTable if empty
-     * @throws Exception
      */
     @Test
     public void sizeEmpty() throws Exception {
@@ -30,7 +37,6 @@ public class HashTableTest {
 
     /**
      * Tests size of hashTable if not empty
-     * @throws Exception
      */
     @Test
     public void sizeNotEmpty() throws Exception {
@@ -45,7 +51,6 @@ public class HashTableTest {
 
     /**
      * Tests put to hashTable if key is wrong
-     * @throws Exception
      */
     @Test(expected = IllegalArgumentException.class)
     public void putNull() throws Exception {
@@ -54,7 +59,6 @@ public class HashTableTest {
 
     /**
      * Tests put to hashTable if key is correct
-     * @throws Exception
      */
     @Test
     public void putNotNull() throws Exception {
@@ -66,7 +70,6 @@ public class HashTableTest {
 
     /**
      * Tests put to hashTable if some keys is same
-     * @throws Exception
      */
     @Test
     public void putWithEqualKeys() throws Exception {
@@ -81,7 +84,6 @@ public class HashTableTest {
 
     /**
      * Tests put to hashTable if all keys are not same
-     * @throws Exception
      */
     @Test
     public void putNotSameKeys() throws Exception {
@@ -97,7 +99,6 @@ public class HashTableTest {
 
     /**
      * Tests size of hashTable if it is not empty
-     * @throws Exception
      */
     @Test
     public void sizeNotZero() throws Exception {
@@ -111,7 +112,6 @@ public class HashTableTest {
 
     /**
      * Tests size of hashTable after clear()
-     * @throws Exception
      */
     @Test
     public void testClear() throws Exception {
@@ -131,7 +131,6 @@ public class HashTableTest {
 
     /**
      * Tests get from hashTable if element exists
-     * @throws Exception
      */
     @Test
     public void testGetNotNull() throws Exception {
@@ -146,7 +145,6 @@ public class HashTableTest {
 
     /**
      * Tests get from hashTable if element does not exists
-     * @throws Exception
      */
     @Test
     public void testGetNull() throws Exception {
@@ -157,7 +155,6 @@ public class HashTableTest {
 
     /**
      * Tests contains in hashTable if element exists
-     * @throws Exception
      */
     @Test
     public void containsTrue() throws Exception {
@@ -168,7 +165,6 @@ public class HashTableTest {
 
     /**
      * Tests contains in hashTable if element is not exists
-     * @throws Exception
      */
     @Test
     public void containsFalse() throws Exception {
@@ -179,7 +175,6 @@ public class HashTableTest {
 
     /**
      * Tests remove from hashTable if key is wrong
-     * @throws Exception
      */
     @Test(expected = IllegalArgumentException.class)
     public void removeException() throws Exception {
@@ -189,7 +184,6 @@ public class HashTableTest {
 
     /**
      * Tests remove from hashTable if key is not in HashTable
-     * @throws Exception
      */
     @Test
     public void removeNull() throws Exception {
@@ -204,7 +198,6 @@ public class HashTableTest {
 
     /**
      * Tests remove from hashTable if key is in HashTable
-     * @throws Exception
      */
     @Test
     public void removeNotNull() throws Exception {
@@ -219,16 +212,15 @@ public class HashTableTest {
 
     /**
      * Tests resize of hashTable to save complexity
-     * @throws Exception
      */
     @Test
     public void reinitializationCalling() throws Exception {
-        for(int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 100; ++i) {
             hashTable.put("key" + i, "null" + i);
         }
 
-        assertEquals(100, hashTable.size());
+
         assertEquals("null2", hashTable.remove("key2"));
-        assertEquals(99, hashTable.size());
+
     }
 }

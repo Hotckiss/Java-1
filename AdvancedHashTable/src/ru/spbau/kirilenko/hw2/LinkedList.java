@@ -52,7 +52,7 @@ public class LinkedList implements KeyValueStorage{
     public String get(String key) {
         LinkedListNode node = findElementByKey(key).getNext();
 
-        if(node == null) {
+        if (node == null) {
             return null;
         }
 
@@ -69,13 +69,13 @@ public class LinkedList implements KeyValueStorage{
      * @return previous string connected with that key in the list, null if key was not in the list
      */
     public String put(String key, String value) {
-        if(key == null) {
+        if (key == null) {
             throw new IllegalArgumentException("Bad key.");
         }
 
         LinkedListNode it = findElementByKey(key);
 
-        if(it.getNext() == null) {
+        if (it.getNext() == null) {
             LinkedListNode node = new LinkedListNode(new KeyValuePair(key, value), null);
             it.setNext(node);
             length++;
@@ -98,13 +98,13 @@ public class LinkedList implements KeyValueStorage{
      * @return value if list contains pair with this key, null otherwise
      */
     public String remove(String key) {
-        if(key == null) {
+        if (key == null) {
             throw new IllegalArgumentException("Bad key.");
         }
 
         LinkedListNode node = findElementByKey(key);
 
-        if(!node.hasNext()) {
+        if (!node.hasNext()) {
             return null;
         }
 
@@ -120,7 +120,7 @@ public class LinkedList implements KeyValueStorage{
      * @return first pair of the list
      */
     public KeyValuePair popFront() {
-        if(!head.hasNext()) {
+        if (!head.hasNext()) {
             return null;
         }
 
@@ -134,8 +134,8 @@ public class LinkedList implements KeyValueStorage{
     private LinkedListNode findElementByKey(String key) {
         LinkedListNode it = head;
 
-        while(it.hasNext()) {
-            if(it.getNext().getKvp().getKey().equals(key)) {
+        while (it.hasNext()) {
+            if (it.getNext().getKvp().getKey().equals(key)) {
                 break;
             }
 

@@ -1,7 +1,8 @@
-package ru.spbau.kirilenko.hw2;
+package ru.spbau.kirilenko.hwTests;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.spbau.kirilenko.hw2.LinkedList;
 
 import static org.junit.Assert.*;
 
@@ -9,17 +10,23 @@ public class LinkedListTest {
     private LinkedList ll;
 
     /**
-     * Tests constructor of list
-     * @throws Exception
+     * Create LinkedList for tests
      */
     @Before
+    public void createLinkedListForTesting() throws Exception {
+        ll = new LinkedList();
+    }
+
+    /**
+     * Test correctness of constructor
+     */
+    @Test
     public void testConstructor() throws Exception {
         ll = new LinkedList();
     }
 
     /**
      * Tests size of list if it is empty
-     * @throws Exception
      */
     @Test
     public void sizeZero() throws Exception {
@@ -28,7 +35,6 @@ public class LinkedListTest {
 
     /**
      * Tests put to the list if key is wrong
-     * @throws Exception
      */
     @Test(expected = IllegalArgumentException.class)
     public void putNull() throws Exception {
@@ -37,7 +43,6 @@ public class LinkedListTest {
 
     /**
      * Tests put to the list if key is correct
-     * @throws Exception
      */
     @Test
     public void putNotNull() throws Exception {
@@ -49,7 +54,6 @@ public class LinkedListTest {
 
     /**
      * Tests put to the list if some keys is same
-     * @throws Exception
      */
     @Test
     public void putWithEqualKeys() throws Exception {
@@ -65,7 +69,6 @@ public class LinkedListTest {
 
     /**
      * Tests put to the list if all keys are not same
-     * @throws Exception
      */
     @Test
     public void putNotSameKeys() throws Exception {
@@ -81,7 +84,6 @@ public class LinkedListTest {
 
     /**
      * Tests size of list if it is not empty
-     * @throws Exception
      */
     @Test
     public void sizeNotZero() throws Exception {
@@ -95,7 +97,6 @@ public class LinkedListTest {
 
     /**
      * Tests size of list if it was cleared
-     * @throws Exception
      */
     @Test
     public void testClear() throws Exception {
@@ -115,7 +116,6 @@ public class LinkedListTest {
 
     /**
      * Tests get from list if key existed
-     * @throws Exception
      */
     @Test
     public void testGetNotNull() throws Exception {
@@ -130,7 +130,6 @@ public class LinkedListTest {
 
     /**
      * Tests get from list if key not existed
-     * @throws Exception
      */
     @Test
     public void testGetNull() throws Exception {
@@ -141,7 +140,6 @@ public class LinkedListTest {
 
     /**
      * Tests contains in list if key existed
-     * @throws Exception
      */
     @Test
     public void containsTrue() throws Exception {
@@ -152,7 +150,6 @@ public class LinkedListTest {
 
     /**
      * Tests contains in list if key not existed
-     * @throws Exception
      */
     @Test
     public void containsFalse() throws Exception {
@@ -163,7 +160,6 @@ public class LinkedListTest {
 
     /**
      * Tests remove from list if key is wrong
-     * @throws Exception
      */
     @Test(expected = IllegalArgumentException.class)
     public void removeException() throws Exception {
@@ -173,7 +169,6 @@ public class LinkedListTest {
 
     /**
      * Tests remove from list if key was not in list
-     * @throws Exception
      */
     @Test
     public void removeNull() throws Exception {
@@ -188,7 +183,6 @@ public class LinkedListTest {
 
     /**
      * Tests remove from list if key was in list
-     * @throws Exception
      */
     @Test
     public void removeNotNull() throws Exception {
@@ -203,7 +197,6 @@ public class LinkedListTest {
 
     /**
      * Tests pop from list if it is empty
-     * @throws Exception
      */
     @Test
     public void popFrontNull() throws Exception {
@@ -214,7 +207,6 @@ public class LinkedListTest {
 
     /**
      * Tests pop from list if it is not empty
-     * @throws Exception
      */
     @Test
     public void popFrontNotNull() throws Exception {
