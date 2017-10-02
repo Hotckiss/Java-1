@@ -60,7 +60,6 @@ public class Trie implements MySerializable {
      * @param element that should be checked
      * @return true if this string was in trie, false otherwise
      */
-
     public boolean contains(String element) {
         if (element == null) {
             throw new IllegalArgumentException("Null string!");
