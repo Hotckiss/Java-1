@@ -104,7 +104,7 @@ public class Trie implements MySerializable {
      * Method that returns a power of set of strings
      * @return number of strings in trie
      */
-    int size() {
+    public int size() {
         return root.getNumberOfTerminalsInSubTree();
     }
 

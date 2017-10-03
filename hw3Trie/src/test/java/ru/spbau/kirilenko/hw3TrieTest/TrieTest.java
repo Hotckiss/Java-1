@@ -1,10 +1,11 @@
-package ru.spbau.kirilenko.hw3Trie;
+package ru.spbau.kirilenko.hw3TrieTest;
 
 import org.junit.Test;
 import org.junit.Before;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import ru.spbau.kirilenko.hw3Trie.Trie;
 
 import static org.junit.Assert.*;
 
