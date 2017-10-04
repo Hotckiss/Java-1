@@ -30,8 +30,6 @@ public class Trie implements MySerializable {
     public void deserialize(InputStream input) throws IOException, ClassNotFoundException {
         ObjectInputStream inputStream = new ObjectInputStream(input);
         root = (Node)inputStream.readObject();
-
-        root.linkTrie();
     }
 
     /**
@@ -180,33 +178,6 @@ public class Trie implements MySerializable {
 
         public int getNumberOfTerminalsInSubTree() {
             return numberOfTerminalsInSubTree;
-        }
-
-        public void linkTrie() {
-            Stack<Node> stack = new Stack<>();
-            stack.push(this);
-            while (!stack.isEmpty()) {
-                Node node = stack.pop();
-                for (Map.Entry<Character, Node> entry : node.children.entrySet()) {
-                    Node child = entry.getValue();
-                    child.parent = node;
-
-                    stack.push(child);
-                }
-            }
-        }
-
-        private void writeObject(ObjectOutputStream output) throws IOException {
-            parent = null;
-            output.writeObject(children);
-            output.writeBoolean(isTerminal);
-            output.writeInt(numberOfTerminalsInSubTree);
-        }
-
-        private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
-            children = (HashMap<Character, Node>)input.readObject();
-            isTerminal = input.readBoolean();
-            numberOfTerminalsInSubTree = input.readInt();
         }
     }
 }

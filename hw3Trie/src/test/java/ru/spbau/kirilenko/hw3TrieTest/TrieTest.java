@@ -247,6 +247,9 @@ public class TrieTest {
         assertFalse(tr.contains("qfdefqq"));
         assertFalse(tr.contains("qqqqqqqq"));
         assertFalse(tr.contains(""));
-
+        assertEquals(4, tr.howManyStartsWithPrefix("qq"));
+        assertTrue(tr.remove("qqf"));
+        assertEquals(7, tr.size());
+        assertEquals(3, tr.howManyStartsWithPrefix("qq"));
     }
 }
