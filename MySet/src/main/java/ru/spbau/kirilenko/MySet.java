@@ -22,6 +22,7 @@ public class MySet<T extends Comparable<T>> {
         if (root.data == null) {
             root.data = newElement;
             size++;
+            
             return true;
         }
 
