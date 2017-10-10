@@ -1,5 +1,7 @@
 package ru.spbau.kirilenko;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * A class representing generic-set of comparable unique elements
  * Elements stored in non-balanced binary tree
@@ -14,7 +16,7 @@ public class MySet<T extends Comparable<T>> {
      * @param newElement element that should be added
      * @return true if element really was added to the tree, false if it was already in set
      */
-    public boolean add(T newElement) {
+    public boolean add(@NotNull T newElement) {
         if (newElement == null) {
             throw new IllegalArgumentException("Bad element!");
         }
@@ -22,7 +24,7 @@ public class MySet<T extends Comparable<T>> {
         if (root.data == null) {
             root.data = newElement;
             size++;
-            
+
             return true;
         }
 
@@ -57,7 +59,7 @@ public class MySet<T extends Comparable<T>> {
      * @param element element that should be found in the set
      * @return true if element really was in the tree, false otherwise
      */
-    public boolean contains(T element) {
+    public boolean contains(@NotNull T element) {
         if (element == null) {
             throw new IllegalArgumentException("Bad element!");
         }
@@ -111,11 +113,11 @@ public class MySet<T extends Comparable<T>> {
             return right;
         }
 
-        public void setLeft(Node<T> node) {
+        public void setLeft(@NotNull Node<T> node) {
             left = node;
         }
 
-        public void setRight(Node<T> node) {
+        public void setRight(@NotNull Node<T> node) {
             right = node;
         }
 
