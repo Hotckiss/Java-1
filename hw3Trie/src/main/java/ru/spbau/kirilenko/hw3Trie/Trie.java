@@ -30,6 +30,8 @@ public class Trie implements MySerializable {
     public void deserialize(InputStream input) throws IOException, ClassNotFoundException {
         ObjectInputStream inputStream = new ObjectInputStream(input);
         root = (Node)inputStream.readObject();
+
+        //root.linkTrie();
     }
 
     /**
@@ -58,6 +60,7 @@ public class Trie implements MySerializable {
      * @param element that should be checked
      * @return true if this string was in trie, false otherwise
      */
+
     public boolean contains(String element) {
         if (element == null) {
             throw new IllegalArgumentException("Null string!");

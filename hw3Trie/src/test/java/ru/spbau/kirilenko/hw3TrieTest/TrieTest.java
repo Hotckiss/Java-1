@@ -5,12 +5,14 @@ import org.junit.Before;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import ru.spbau.kirilenko.hw3Trie.Trie;
 
 import static org.junit.Assert.*;
 
 public class TrieTest {
-    Trie tr;
+    private Trie tr;
 
     /**
      * Initialize empty trie
@@ -199,45 +201,34 @@ public class TrieTest {
      * A test that check serialization and deserialization of empty trie
      */
     @Test
-    public void testSerializeDeserializeEmptyTrie() {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()){
-            tr.serialize(out);
-            try (ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
-                tr.deserialize(in);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+    public void testSerializeDeserializeEmptyTrie() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        tr.serialize(out);
+        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+        tr.deserialize(in);
     }
 
     /**
      * A test that check serialization and deserialization of non-empty trie
      */
     @Test
-    public void testSerializeDeserializeNonEmptyTrie() {
+    public void testSerializeDeserializeNonEmptyTrie() throws IOException, ClassNotFoundException {
         Trie newTrie = new Trie();
 
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()){
-            tr.add("qqf");
-            tr.add("qqq");
-            tr.add("qqq2");
-            tr.add("qqq1");
-            tr.add("aqqf");
-            tr.add("qdfqq");
-            tr.add("aaqqq2");
-            tr.add("rrqqq1");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        tr.add("qqf");
+        tr.add("qqq");
+        tr.add("qqq2");
+        tr.add("qqq1");
+        tr.add("aqqf");
+        tr.add("qdfqq");
+        tr.add("aaqqq2");
+        tr.add("rrqqq1");
 
-            tr.serialize(out);
-            try (ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
-                newTrie.deserialize(in);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        tr.serialize(out);
+        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+        newTrie.deserialize(in);
+
 
         assertEquals(8, tr.size());
         assertTrue(tr.contains("qqf"));
