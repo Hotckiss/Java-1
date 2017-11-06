@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MySet.iml" filepath="$PROJECT_DIR$/.idea/modules/MySet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MySet_main.iml" filepath="$PROJECT_DIR$/.idea/modules/MySet_main.iml" group="MySet" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MySet_test.iml" filepath="$PROJECT_DIR$/.idea/modules/MySet_test.iml" group="MySet" />
+    </modules>
+  </component>
+</project>
