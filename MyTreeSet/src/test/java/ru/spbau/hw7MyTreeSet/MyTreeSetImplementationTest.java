@@ -903,7 +903,7 @@ public class MyTreeSetImplementationTest {
 
         Iterator<Integer> it = descTree.iterator();
 
-        for(int i = 0; i < 15; i++) {
+        for (int i = 0; i < 15; i++) {
             assertTrue(it.hasNext());
             assertTrue(it.next().equals(15 - i));
         }
@@ -911,7 +911,7 @@ public class MyTreeSetImplementationTest {
 
         it = descTree.descendingIterator();
 
-        for(int i = 0; i < 15; i++) {
+        for (int i = 0; i < 15; i++) {
             assertTrue(it.hasNext());
             assertTrue(it.next().equals(i + 1));
         }
@@ -926,5 +926,139 @@ public class MyTreeSetImplementationTest {
         assertTrue(descTree.floor(2).equals(2));
 
         assertTrue(descTree.contains(2));
+    }
+
+    /**
+     * Simple test of invalidation of descending iterator
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testDescendingIteratorInvalidation() {
+        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
+
+        tree.add(8);
+        tree.add(4);
+        tree.add(12);
+        tree.add(2);
+        tree.add(6);
+        tree.add(10);
+        tree.add(14);
+        tree.add(1);
+        tree.add(3);
+        tree.add(5);
+        tree.add(7);
+        tree.add(9);
+        tree.add(11);
+        tree.add(13);
+        tree.add(15);
+
+        Iterator<Integer> it = tree.iterator();
+
+        for (int i = 0; i < 7; i++) {
+            assertTrue(it.hasNext());
+            assertTrue(it.next().equals(i + 1));
+        }
+        tree.remove(5);
+        it.next();
+    }
+
+    /**
+     * Simple test of invalidation of iterator
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testIteratorInvalidation() {
+        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
+
+        tree.add(8);
+        tree.add(4);
+        tree.add(12);
+        tree.add(2);
+        tree.add(6);
+        tree.add(10);
+        tree.add(14);
+        tree.add(1);
+        tree.add(3);
+        tree.add(5);
+        tree.add(7);
+        tree.add(9);
+        tree.add(11);
+        tree.add(13);
+        tree.add(15);
+
+        Iterator<Integer> it = tree.iterator();
+
+        for (int i = 0; i < 7; i++) {
+            assertTrue(it.hasNext());
+            assertTrue(it.next().equals(i + 1));
+        }
+        tree.remove(5);
+        it.next();
+    }
+
+    /**
+     * Simple test of iterator remove
+     */
+    @Test
+    public void testIteratorRemoveNotInvalid() {
+        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
+
+        tree.add(8);
+        tree.add(4);
+        tree.add(12);
+        tree.add(2);
+        tree.add(6);
+        tree.add(10);
+        tree.add(14);
+        tree.add(1);
+        tree.add(3);
+        tree.add(5);
+        tree.add(7);
+        tree.add(9);
+        tree.add(11);
+        tree.add(13);
+        tree.add(15);
+
+        Iterator<Integer> it = tree.iterator();
+
+        for (int i = 0; i < 5; i++) {
+            it.next();
+        }
+
+        it.remove();
+
+        assertEquals(14, tree.size());
+
+        Iterator<Integer> it2 = tree.iterator();
+
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(1));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(2));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(3));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(4));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(6));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(7));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(8));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(9));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(10));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(11));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(12));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(13));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(14));
+        assertTrue(it2.hasNext());
+        assertTrue(it2.next().equals(15));
+        assertFalse(it2.hasNext());
+
+        it.next();
     }
 }

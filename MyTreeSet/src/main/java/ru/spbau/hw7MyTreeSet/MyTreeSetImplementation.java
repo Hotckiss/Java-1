@@ -19,7 +19,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     private Node minNode = null;
     private Node maxNode = null;
     private Comparator<? super K> comparator;
-
+    private long version = 0;
     /**
      * Constructor without comparator - we will use standard
      */
@@ -53,6 +53,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
             updateMax();
             updateMin();
             size++;
+            version++;
             return true;
         }
     }
@@ -138,6 +139,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
         updateMax();
         updateMin();
         size--;
+        version++;
         return true;
     }
 
@@ -149,28 +151,45 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     public Iterator<K> iterator() {
         return new Iterator<K>() {
             private Node next = minNode;
+            private Node last_returned = null;
+            private long ver = version;
             @Override
             public boolean hasNext() {
+                if(!isValid()) {
+                    throw new IllegalStateException();
+                }
+
                 return next != null;
             }
 
             @Override
             public K next() {
+                if(!isValid()) {
+                    throw new IllegalStateException();
+                }
+
                 K returnValue = next.key;
+                last_returned = next;
                 next = nextNode(next);
                 return returnValue;
             }
-            private
-        };
-    }
 
-    /**
-     * Returns a size of a tree
-     * @return size of a tree
-     */
-    @Override
-    public int size() {
-        return size;
+            @Override
+            public void remove() {
+                if(last_returned != null) {
+                    MyTreeSetImplementation.this.remove(last_returned.key);
+                }
+
+                next = minNode;
+                last_returned = null;
+                ver = version;
+            }
+
+            private boolean isValid() {
+                return ver == version;
+            }
+
+        };
     }
 
     /**
@@ -181,18 +200,51 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     public Iterator<K> descendingIterator() {
         return new Iterator<K>() {
             private Node next = maxNode;
+            private Node last_returned = null;
+            private long ver = version;
             @Override
             public boolean hasNext() {
+                if(!isValid()) {
+                    throw new IllegalStateException();
+                }
+
                 return next != null;
             }
 
             @Override
             public K next() {
+                if(!isValid()) {
+                    throw new IllegalStateException();
+                }
+
                 K returnValue = next.key;
                 next = prevNode(next);
                 return returnValue;
             }
+
+            @Override
+            public void remove() {
+                if(last_returned != null) {
+                    MyTreeSetImplementation.this.remove(last_returned.key);
+                }
+                next = maxNode;
+                last_returned = null;
+                ver = version;
+            }
+
+            private boolean isValid() {
+                return ver == version;
+            }
         };
+    }
+
+    /**
+     * Returns a size of a tree
+     * @return size of a tree
+     */
+    @Override
+    public int size() {
+        return size;
     }
 
     /**
