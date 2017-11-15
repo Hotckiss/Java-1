@@ -114,7 +114,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
                     toRemove.parent.right = toRemove.right;
                 }
                 toRemove.right.parent = toRemove.parent;
-            } else if(toRemove.right == null) {
+            } else if (toRemove.right == null) {
                 if (comparator.compare(toRemove.parent.key, toRemove.key) > 0) {
                     toRemove.parent.left = toRemove.left;
                 } else {
@@ -155,7 +155,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
             private long ver = version;
             @Override
             public boolean hasNext() {
-                if(!isValid()) {
+                if (!isValid()) {
                     throw new IllegalStateException();
                 }
 
@@ -164,7 +164,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
 
             @Override
             public K next() {
-                if(!isValid()) {
+                if (!isValid()) {
                     throw new IllegalStateException();
                 }
 
@@ -176,7 +176,11 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
 
             @Override
             public void remove() {
-                if(last_returned != null) {
+                if (!isValid()) {
+                    throw new IllegalStateException();
+                }
+
+                if (last_returned != null) {
                     MyTreeSetImplementation.this.remove(last_returned.key);
                 }
 
@@ -204,7 +208,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
             private long ver = version;
             @Override
             public boolean hasNext() {
-                if(!isValid()) {
+                if (!isValid()) {
                     throw new IllegalStateException();
                 }
 
@@ -213,7 +217,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
 
             @Override
             public K next() {
-                if(!isValid()) {
+                if (!isValid()) {
                     throw new IllegalStateException();
                 }
 
@@ -224,7 +228,11 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
 
             @Override
             public void remove() {
-                if(last_returned != null) {
+                if (!isValid()) {
+                    throw new IllegalStateException();
+                }
+
+                if (last_returned != null) {
                     MyTreeSetImplementation.this.remove(last_returned.key);
                 }
                 next = maxNode;
@@ -562,7 +570,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     }
     private Node findNodeByKey(K k) {
         Node ptr = root;
-        if(ptr == null) {
+        if (ptr == null) {
             return null;
         }
         while (ptr != null) {
