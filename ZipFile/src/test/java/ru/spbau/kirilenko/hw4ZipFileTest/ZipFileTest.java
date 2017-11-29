@@ -1,5 +1,6 @@
 package ru.spbau.kirilenko.hw4ZipFileTest;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.spbau.kirilenko.hw4ZipFile.MyZipFile;
@@ -37,18 +38,13 @@ public class ZipFileTest {
 
         File file1 = new File(System.getProperty("user.dir") + "/src/test/resources/test.zip");
         file1.createNewFile();
-
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(file1))) {
-            for (int i = 0; i < 5; i++) {
-                zos.putNextEntry(new ZipEntry(i +".txt"));
-                zos.write(data[i], 0, data[i].length);
-                zos.closeEntry();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(file1));
+        for (int i = 0; i < 5; i++) {
+            zos.putNextEntry(new ZipEntry(i +".txt"));
+            zos.write(data[i], 0, data[i].length);
+            zos.closeEntry();
         }
+        zos.close();
     }
 
     /**
@@ -60,22 +56,37 @@ public class ZipFileTest {
 
         Path path = Paths.get(dir + "0.txt");
         assertArrayEquals(data[0], Files.readAllBytes(path));
-        Files.delete(path);
 
         path = Paths.get(dir + "1.txt");
         assertArrayEquals(data[1], Files.readAllBytes(path));
-        Files.delete(path);
 
         path = Paths.get(dir + "2.txt");
         assertArrayEquals(data[2], Files.readAllBytes(path));
-        Files.delete(path);
 
         path = Paths.get(dir + "3.txt");
         assertArrayEquals(data[3], Files.readAllBytes(path));
-        Files.delete(path);
 
         path = Paths.get(dir + "4.txt");
         assertArrayEquals(data[4], Files.readAllBytes(path));
+    }
+
+    @After
+    public void testUnzipByRegexp1After() throws Exception {
+        MyZipFile.main(new String[] {dir, "(.*).txt"});
+
+        Path path = Paths.get(dir + "0.txt");
+        Files.delete(path);
+
+        path = Paths.get(dir + "1.txt");
+        Files.delete(path);
+
+        path = Paths.get(dir + "2.txt");
+        Files.delete(path);
+
+        path = Paths.get(dir + "3.txt");
+        Files.delete(path);
+
+        path = Paths.get(dir + "4.txt");
         Files.delete(path);
     }
 
@@ -89,7 +100,10 @@ public class ZipFileTest {
         Path path = Paths.get(dir + "3.txt");
         assertArrayEquals(data[3], Files.readAllBytes(path));
         Files.delete(path);
+        assertEquals(1, (new File(dir)).listFiles().length);
     }
+
+
 
     /**
      * Test not extract any files from the archive and check correctness

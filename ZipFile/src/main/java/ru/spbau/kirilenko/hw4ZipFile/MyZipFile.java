@@ -35,21 +35,15 @@ public class MyZipFile {
         unzip(args[1]);
     }
 
-    private static void findFiles(@NotNull File currentFile) {
-        try {
-            for (File file : currentFile.listFiles()) {
-
-                if (file.isDirectory()) {
-                    findFiles(file);
-                } else {
-                    if (file.getName().endsWith(".zip")) {
-                        files.add(new ZipFile(file));
-                    }
+    private static void findFiles(@NotNull File currentFile) throws IOException {
+        for (File file : currentFile.listFiles()) {
+            if (file.isDirectory()) {
+                findFiles(file);
+            } else {
+                if (file.getName().endsWith(".zip")) {
+                    files.add(new ZipFile(file));
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -78,17 +72,14 @@ public class MyZipFile {
                     if (!outputFile.createNewFile()) {
                         return;
                     }
+                    FileOutputStream os = new FileOutputStream(outputFile);
+                    InputStream input = file.getInputStream(entry);
+                    int length;
 
-                    try (FileOutputStream os = new FileOutputStream(outputFile)) {
-                        InputStream input = file.getInputStream(entry);
-                        int length;
-
-                        while ((length = input.read(buffer)) > 0) {
-                            os.write(buffer, 0, length);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    while ((length = input.read(buffer)) > 0) {
+                        os.write(buffer, 0, length);
                     }
+                    os.close();
                 }
             }
         }
