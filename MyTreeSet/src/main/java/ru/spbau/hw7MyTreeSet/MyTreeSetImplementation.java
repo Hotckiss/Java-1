@@ -587,16 +587,16 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     }
 
     private class Node {
-        Node left = null;
-        Node right = null;
-        Node parent = null;
-        K key;
+        private Node left = null;
+        private Node right = null;
+        private Node parent = null;
+        private K key;
 
-        Node (K key) {
+        public Node (K key) {
             this.key = key;
         }
 
-        Node (K key, Node parent) {
+        public Node (K key, Node parent) {
             this.key = key;
             this.parent = parent;
         }
