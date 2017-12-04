@@ -56,11 +56,8 @@ public class MaybeTest {
     @Test
     public void testGetNotNull() throws Exception {
         Maybe<Integer> maybe = Maybe.just(7);
-        try {
-            assertTrue(maybe.get().equals(7));
-        } catch(MaybeException ex) {
-            fail(ex.getMessage());
-        }
+
+        assertTrue(maybe.get().equals(7));
     }
 
     /**
@@ -90,12 +87,7 @@ public class MaybeTest {
     public void testMapNotNull() throws Exception {
         Maybe<Integer> maybe = Maybe.just(7);
 
-        try {
-            assertTrue(maybe.map(x -> x*x).get().equals(49));
-        } catch(MaybeException ex) {
-            fail(ex.getMessage());
-        }
-
+        assertTrue(maybe.map(x -> x * x).get().equals(49));
     }
 
     /**
@@ -105,7 +97,7 @@ public class MaybeTest {
     public void testMapNull() throws Exception {
         Maybe<Integer> maybe = Maybe.nothing();
 
-        assertFalse(maybe.map(x -> x*x).isPresent());
+        assertFalse(maybe.map(x -> x * x).isPresent());
     }
 
     /**
@@ -114,17 +106,17 @@ public class MaybeTest {
     @Test
     public void testReadFromFile() throws Exception {
         File file = new File("in.txt");
-        Scanner scanner = new Scanner(file);
+        try (Scanner scanner = new Scanner(file)) {
+            assertEquals((Integer)1234, MaybeTest.readNumber(scanner).get());
+            assertFalse(MaybeTest.readNumber(scanner).isPresent());
 
-        assertTrue(MaybeTest.readNumber(scanner).get().equals(1234));
-        assertFalse(MaybeTest.readNumber(scanner).isPresent());
-        assertTrue(MaybeTest.readNumber(scanner).get().equals(5));
-        assertTrue(MaybeTest.readNumber(scanner).get().equals(6));
-        assertTrue(MaybeTest.readNumber(scanner).get().equals(7));
-        assertFalse(MaybeTest.readNumber(scanner).isPresent());
-        assertTrue(MaybeTest.readNumber(scanner).get().equals(4444));
+            assertEquals((Integer)5, MaybeTest.readNumber(scanner).get());
+            assertEquals((Integer)6, MaybeTest.readNumber(scanner).get());
+            assertEquals((Integer)7, MaybeTest.readNumber(scanner).get());
+            assertFalse(MaybeTest.readNumber(scanner).isPresent());
 
-        scanner.close();
+            assertEquals((Integer)4444, MaybeTest.readNumber(scanner).get());
+        }
     }
 
     /**
@@ -135,11 +127,9 @@ public class MaybeTest {
         File fileIn = new File("in.txt");
         File fileOut = new File("out.txt");
         fileOut.createNewFile();
-
-        Scanner scanner = new Scanner(fileIn);
-
         Maybe<Integer> maybe;
-        try (BufferedWriter fw = new BufferedWriter(new FileWriter("out.txt"))) {
+
+        try (BufferedWriter fw = new BufferedWriter(new FileWriter("out.txt")); Scanner scanner = new Scanner(fileIn);) {
             for(int i = 0; i < 7; i++) {
                 maybe = MaybeTest.readNumber(scanner);
                 if (maybe.isPresent()) {
@@ -147,24 +137,22 @@ public class MaybeTest {
                 } else {
                     fw.write("null\n");
                 }
-                }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            }
         }
 
-        scanner.close();
+        try (Scanner scannerOut = new Scanner(fileOut)) {
+            assertEquals((Integer)1522756, MaybeTest.readNumber(scannerOut).get());
 
-        Scanner scannerOut = new Scanner(fileOut);
+            assertFalse(MaybeTest.readNumber(scannerOut).isPresent());
 
-        assertTrue(MaybeTest.readNumber(scannerOut).get().equals(1522756));
-        assertFalse(MaybeTest.readNumber(scannerOut).isPresent());
-        assertTrue(MaybeTest.readNumber(scannerOut).get().equals(25));
-        assertTrue(MaybeTest.readNumber(scannerOut).get().equals(36));
-        assertTrue(MaybeTest.readNumber(scannerOut).get().equals(49));
-        assertFalse(MaybeTest.readNumber(scannerOut).isPresent());
-        assertTrue(MaybeTest.readNumber(scannerOut).get().equals(19749136));
+            assertEquals((Integer)25, MaybeTest.readNumber(scannerOut).get());
+            assertEquals((Integer)36, MaybeTest.readNumber(scannerOut).get());
+            assertEquals((Integer)49, MaybeTest.readNumber(scannerOut).get());
 
-        scannerOut.close();
+            assertFalse(MaybeTest.readNumber(scannerOut).isPresent());
+
+            assertEquals((Integer)19749136, MaybeTest.readNumber(scannerOut).get());
+        }
 
     }
 

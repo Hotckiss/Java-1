@@ -12,7 +12,7 @@ import java.util.function.Function;
  */
 public class Maybe<T> {
     private @Nullable T value;
-
+    private static final Maybe NOTHING = new Maybe<>(null);
     /**
      * This method constructs new Maybe class that stores input value
      * @param t valuse that should be stored
@@ -28,8 +28,9 @@ public class Maybe<T> {
      * @param <T> value type
      * @return new Maybe with no value inside
      */
+    @SuppressWarnings("unchecked")
     public static <T> Maybe<T> nothing() {
-        return new Maybe<>(null);
+        return NOTHING;
     }
 
     /**
@@ -59,7 +60,7 @@ public class Maybe<T> {
      * @param <U> value type of new Maybe
      * @return new Maybe with the result
      */
-    public <U> Maybe<U> map(Function<T, U> mapper) {
+    public <U> Maybe<U> map(@NotNull Function<? super T, U> mapper) {
         if (!isPresent()) {
             return new Maybe<>(null);
         }
