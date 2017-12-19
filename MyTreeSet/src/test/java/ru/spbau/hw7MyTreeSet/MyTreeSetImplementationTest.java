@@ -1,7 +1,9 @@
 package ru.spbau.hw7MyTreeSet;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -11,13 +13,21 @@ import static org.junit.Assert.*;
  */
 public class MyTreeSetImplementationTest {
 
+    MyTreeSetImplementation<Integer> tree;
+
+    /**
+     * Initialize tree before each test
+     */
+    @Before
+    public void initTree() {
+        tree = new MyTreeSetImplementation<>();
+    }
+
     /**
      * Simple test of adding elements
      */
     @Test
     public void testAdd() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
 
         assertEquals(1, tree.size());
@@ -44,8 +54,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testContains() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(6);
         tree.add(4);
@@ -65,8 +73,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testIterator1() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(6);
         tree.add(4);
@@ -94,8 +100,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testDescendingIterator1() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(6);
         tree.add(4);
@@ -123,8 +127,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testIterator2() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(8);
         tree.add(7);
@@ -164,8 +166,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testDescendingIterator2() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(8);
         tree.add(7);
@@ -205,8 +205,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testSize() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         assertEquals(0, tree.size());
 
         tree.add(5);
@@ -225,8 +223,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testFirst() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         assertNull(tree.first());
 
         tree.add(5);
@@ -257,8 +253,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testLast() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         assertNull(tree.last());
 
         tree.add(5);
@@ -288,8 +282,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveRoot() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(8);
         tree.add(7);
@@ -323,8 +315,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveRootSingle() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
 
         tree.remove(5);
@@ -340,8 +330,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveRootLeft() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(3);
         tree.add(4);
@@ -365,8 +353,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveRootRight() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(7);
         tree.add(6);
@@ -390,8 +376,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveRootBoth() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(7);
         tree.add(6);
@@ -424,8 +408,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveFromEmpty() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.remove(5);
         assertEquals(0, tree.size());
 
@@ -439,8 +421,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveLeaf() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(4);
         tree.remove(4);
@@ -458,8 +438,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveLeft() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(7);
         tree.add(6);
@@ -495,8 +473,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveRight() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(6);
         tree.add(8);
@@ -535,8 +511,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveHard1() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -594,8 +568,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveHard2() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -653,8 +625,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveHardcoreMany() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -714,8 +684,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testRemoveNotExists() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(5);
         tree.add(8);
         tree.add(7);
@@ -751,8 +719,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testFloor() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -783,8 +749,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testLower() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -816,8 +780,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testCeiling() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -848,8 +810,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testHigher() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -877,12 +837,43 @@ public class MyTreeSetImplementationTest {
     }
 
     /**
+     * Simple test of taking higher value
+     */
+    @Test
+    public void testHigherComparator() {
+        tree = new MyTreeSetImplementation<>(Comparator.reverseOrder());
+
+        tree.add(8);
+        tree.add(4);
+        tree.add(12);
+        tree.add(2);
+        tree.add(6);
+        tree.add(10);
+        tree.add(14);
+        tree.add(1);
+        tree.add(3);
+        tree.add(5);
+        tree.add(7);
+        tree.add(9);
+        tree.add(11);
+        tree.add(13);
+        tree.add(15);
+
+        assertTrue(tree.lower(5).equals(6));
+        assertTrue(tree.lower(4).equals(5));
+        assertTrue(tree.lower(-1).equals(1));
+        assertNull(tree.lower(100));
+
+        tree.remove(4);
+
+        assertTrue(tree.lower(3).equals(5));
+    }
+
+    /**
      * Simple test of descending set tree
      */
     @Test
     public void testDescendingSet() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -933,8 +924,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testDescendingIteratorInvalidation() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -966,8 +955,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testIteratorInvalidation() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);
@@ -999,8 +986,6 @@ public class MyTreeSetImplementationTest {
      */
     @Test
     public void testIteratorRemoveNotInvalid() {
-        MyTreeSetImplementation<Integer> tree = new MyTreeSetImplementation<>();
-
         tree.add(8);
         tree.add(4);
         tree.add(12);

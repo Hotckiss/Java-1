@@ -41,8 +41,8 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
      */
     @Override
     public boolean add(K k) {
-        Node wasBeen = findNodeByKey(k);
-        if (wasBeen != null) {
+        Node was = findNodeByKey(k);
+        if (was != null) {
             return false;
         } else {
             if (root == null) {
@@ -65,7 +65,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
      */
     @Override
     public boolean contains(Object k) {
-        return findNodeByKey((K)k) != null;
+        return findNodeByKey(k) != null;
     }
 
     /* Kill me, please */
@@ -77,7 +77,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
      */
     @Override
     public boolean remove(Object k) {
-        Node toRemove = findNodeByKey((K)k);
+        Node toRemove = findNodeByKey(k);
         if (toRemove == null) {
             return false;
         }
@@ -101,21 +101,20 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
             }
         } else {
             if ((toRemove.left == null) && (toRemove.right == null)) {
-                if (comparator.compare(toRemove.parent.key, toRemove.key) > 0) {
+                if (comparator.compare((K)toRemove.parent.key, (K)toRemove.key) > 0) {
                     toRemove.parent.left = null;
                 } else {
                     toRemove.parent.right = null;
                 }
             } else if (toRemove.left == null) {
-                if (comparator.compare(toRemove.parent.key, toRemove.key) > 0) {
+                if (comparator.compare((K)toRemove.parent.key, (K)toRemove.key) > 0) {
                     toRemove.parent.left = toRemove.right;
-
                 } else {
                     toRemove.parent.right = toRemove.right;
                 }
                 toRemove.right.parent = toRemove.parent;
             } else if (toRemove.right == null) {
-                if (comparator.compare(toRemove.parent.key, toRemove.key) > 0) {
+                if (comparator.compare((K)toRemove.parent.key, (K)toRemove.key) > 0) {
                     toRemove.parent.left = toRemove.left;
                 } else {
                     toRemove.parent.right = toRemove.left;
@@ -129,7 +128,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
                 ptr.left = toRemove.left;
                 toRemove.left.parent = ptr;
                 ptr = toRemove.right;
-                if (comparator.compare(toRemove.parent.key, ptr.key) > 0) {
+                if (comparator.compare((K)toRemove.parent.key, (K)ptr.key) > 0) {
                     toRemove.parent.left = ptr;
                 } else {
                     toRemove.parent.right = ptr;
@@ -149,51 +148,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
      */
     @Override
     public Iterator<K> iterator() {
-        return new Iterator<K>() {
-            private Node next = minNode;
-            private Node last_returned = null;
-            private long ver = version;
-            @Override
-            public boolean hasNext() {
-                if (!isValid()) {
-                    throw new IllegalStateException();
-                }
-
-                return next != null;
-            }
-
-            @Override
-            public K next() {
-                if (!isValid()) {
-                    throw new IllegalStateException();
-                }
-
-                K returnValue = next.key;
-                last_returned = next;
-                next = nextNode(next);
-                return returnValue;
-            }
-
-            @Override
-            public void remove() {
-                if (!isValid()) {
-                    throw new IllegalStateException();
-                }
-
-                if (last_returned != null) {
-                    MyTreeSetImplementation.this.remove(last_returned.key);
-                }
-
-                next = minNode;
-                last_returned = null;
-                ver = version;
-            }
-
-            private boolean isValid() {
-                return ver == version;
-            }
-
-        };
+        return new IncreadingIterator<>();
     }
 
     /**
@@ -202,48 +157,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
      */
     @Override
     public Iterator<K> descendingIterator() {
-        return new Iterator<K>() {
-            private Node next = maxNode;
-            private Node last_returned = null;
-            private long ver = version;
-            @Override
-            public boolean hasNext() {
-                if (!isValid()) {
-                    throw new IllegalStateException();
-                }
-
-                return next != null;
-            }
-
-            @Override
-            public K next() {
-                if (!isValid()) {
-                    throw new IllegalStateException();
-                }
-
-                K returnValue = next.key;
-                next = prevNode(next);
-                return returnValue;
-            }
-
-            @Override
-            public void remove() {
-                if (!isValid()) {
-                    throw new IllegalStateException();
-                }
-
-                if (last_returned != null) {
-                    MyTreeSetImplementation.this.remove(last_returned.key);
-                }
-                next = maxNode;
-                last_returned = null;
-                ver = version;
-            }
-
-            private boolean isValid() {
-                return ver == version;
-            }
-        };
+        return new DecreadingIterator<>();
     }
 
     /**
@@ -378,7 +292,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
      */
     @Override
     public K first() {
-        return (minNode == null) ? null : minNode.key;
+        return (minNode == null) ? null : (K)minNode.key;
     }
 
     /**
@@ -387,7 +301,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
      */
     @Override
     public K last() {
-        return (maxNode == null) ? null : maxNode.key;
+        return (maxNode == null) ? null : (K)maxNode.key;
     }
 
     /**
@@ -439,7 +353,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     }
 
     private void addToSubTree (@NotNull Node node, K k) {
-        int cmp = comparator.compare(node.key, k);
+        int cmp = comparator.compare((K)node.key, k);
         if (cmp > 0) {
             if (node.left == null) {
                 node.left = new Node(k, node);
@@ -477,6 +391,79 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
         }
     }
 
+    private class IncreadingIterator<K> extends AbstractIterator<K> {
+        IncreadingIterator() {
+            super.next = minNode;
+        }
+        @Override
+        public K next() {
+            if (!super.isValid()) {
+                throw new IllegalStateException();
+            }
+
+            K returnValue = (K)super.next.key;
+            super.lastReturned = super.next;
+            super.next = nextNode(super.next);
+            return returnValue;
+        }
+        public void remove() {
+            super.remove();
+            super.next = minNode;
+        }
+    }
+
+    private class DecreadingIterator<K> extends AbstractIterator<K> {
+        DecreadingIterator() {
+            super.next = maxNode;
+        }
+        @Override
+        public K next() {
+            if (!super.isValid()) {
+                throw new IllegalStateException();
+            }
+
+            K returnValue = (K)super.next.key;
+            super.lastReturned = super.next;
+            super.next = prevNode(super.next);
+            return returnValue;
+        }
+        public void remove() {
+            super.remove();
+            super.next = maxNode;
+        }
+    }
+
+    private abstract class AbstractIterator<K> implements Iterator<K> {
+        private Node next;
+        private Node lastReturned = null;
+        private long ver = version;
+        @Override
+        public boolean hasNext() {
+            if (!isValid()) {
+                throw new IllegalStateException();
+            }
+
+            return next != null;
+        }
+
+        @Override
+        public void remove() {
+            if (!isValid()) {
+                throw new IllegalStateException();
+            }
+
+            if (lastReturned != null) {
+                MyTreeSetImplementation.this.remove(lastReturned.key);
+            }
+            lastReturned = null;
+            ver = version;
+        }
+
+        private boolean isValid() {
+            return ver == version;
+        }
+    }
+
     private Node nextNode(Node curNode) {
         if (curNode.right != null) {
             Node next = curNode.right;
@@ -486,12 +473,12 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
 
             return next;
         } else if (curNode.parent != null) {
-            if(comparator.compare(curNode.key, curNode.parent.key) < 0) {
+            if (comparator.compare((K)curNode.key, (K)curNode.parent.key) < 0) {
                 return curNode.parent;
             }
             else {
                 Node ptr = curNode;
-                while (ptr.parent != null && comparator.compare(ptr.key, ptr.parent.key) > 0) {
+                while (ptr.parent != null && comparator.compare((K)ptr.key, (K)ptr.parent.key) > 0) {
                     ptr = ptr.parent;
                 }
                 return ptr.parent;
@@ -509,12 +496,12 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
             }
             return next;
         } else if (curNode.parent != null) {
-            if (comparator.compare(curNode.key, curNode.parent.key) > 0) {
+            if (comparator.compare((K)curNode.key, (K)curNode.parent.key) > 0) {
                 return curNode.parent;
             }
             else {
                 Node ptr = curNode.parent;
-                while (ptr.parent != null && comparator.compare(ptr.key, ptr.parent.key) < 0) {
+                while (ptr.parent != null && comparator.compare((K)ptr.key, (K)ptr.parent.key) < 0) {
                     ptr = ptr.parent;
                 }
                 return ptr.parent;
@@ -527,14 +514,14 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     private K lower(@NotNull Node node, K k) {
         Node ptr = node;
         while (ptr != null) {
-            int cmp = comparator.compare(ptr.key, k);
+            int cmp = comparator.compare((K)ptr.key, k);
             if (cmp < 0) {
                 if (ptr.right == null) {
-                    return ptr.key;
+                    return (K)ptr.key;
                 } else {
                     K retValue = lower(ptr.right, k);
                     if (retValue == null) {
-                        return ptr.key;
+                        return (K)ptr.key;
                     } else {
                         return retValue;
                     }
@@ -549,14 +536,14 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
     private K higher(@NotNull Node node, K k) {
         Node ptr = node;
         while (ptr != null) {
-            int cmp = comparator.compare(ptr.key, k);
+            int cmp = comparator.compare((K)ptr.key, k);
             if (cmp > 0) {
                 if (ptr.left == null) {
-                    return ptr.key;
+                    return (K)ptr.key;
                 } else {
                     K retValue = higher(ptr.left, k);
                     if (retValue == null) {
-                        return ptr.key;
+                        return (K)ptr.key;
                     } else {
                         return retValue;
                     }
@@ -568,13 +555,13 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
         }
         return null;
     }
-    private Node findNodeByKey(K k) {
+    private Node findNodeByKey(Object k) {
         Node ptr = root;
         if (ptr == null) {
             return null;
         }
         while (ptr != null) {
-            int cmp = comparator.compare(ptr.key, k);
+            int cmp = comparator.compare((K)ptr.key, (K)k);
             if (cmp > 0) {
                 ptr = ptr.left;
             } else if (cmp < 0) {
@@ -586,7 +573,7 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
         return ptr;
     }
 
-    private class Node {
+    private static class Node<K> {
         private Node left = null;
         private Node right = null;
         private Node parent = null;
