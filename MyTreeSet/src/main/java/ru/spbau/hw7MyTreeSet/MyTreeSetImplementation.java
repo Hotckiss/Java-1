@@ -579,11 +579,11 @@ public class MyTreeSetImplementation<K> extends AbstractSet<K> implements MyTree
         private Node parent = null;
         private K key;
 
-        public Node (K key) {
+        public Node(K key) {
             this.key = key;
         }
 
-        public Node (K key, Node parent) {
+        public Node(K key, Node parent) {
             this.key = key;
             this.parent = parent;
         }
