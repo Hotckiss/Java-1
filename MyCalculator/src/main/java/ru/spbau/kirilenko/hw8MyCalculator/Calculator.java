@@ -6,8 +6,8 @@ package ru.spbau.kirilenko.hw8MyCalculator;
  */
 public class Calculator {
 
-    MyStack operands = null;
-    MyStack operators = null;
+    private MyStack operands = null;
+    private MyStack operators = null;
 
     private enum State { WAIT_PREFIX, WAIT_SUFFIX, PARSE_ERROR, DONE, END }
 
