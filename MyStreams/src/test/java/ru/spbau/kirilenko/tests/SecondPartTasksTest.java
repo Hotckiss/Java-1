@@ -55,7 +55,6 @@ public class SecondPartTasksTest {
         writers.put("Andrey", Arrays.asList("sdvkabvhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhaweldsojegkjlNVrlg;eLJRGHA,EJGHAKSDV") );
 
         assertEquals("Andrey", SecondPartTasks.findPrinter(writers));
-        //   System.out.println(SecondPartTasks.findPrinter(writers));
     }
 
     /**

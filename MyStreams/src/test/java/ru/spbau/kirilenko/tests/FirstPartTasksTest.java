@@ -2,8 +2,10 @@ package ru.spbau.kirilenko.tests;
 
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
+import ru.spbau.kirilenko.Album;
+import ru.spbau.kirilenko.Artist;
+import ru.spbau.kirilenko.Track;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -11,10 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static ru.spbau.kirilenko.FirstPartTasks.*;
-
-import ru.spbau.kirilenko.*;
 
 /**
  * A class that tests all methods of FirstPartTasks
