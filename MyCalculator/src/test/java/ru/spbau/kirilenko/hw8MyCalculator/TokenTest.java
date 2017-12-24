@@ -7,16 +7,16 @@ import static org.junit.Assert.*;
 /**
  * A class that tests all methods of token class
  */
-public class TokTest {
+public class TokenTest {
 
     /**
      * A test of equality of two tokens
      */
     @Test
     public void testEquals() {
-        Tok expected1 = new Tok(Tok.Tokid.TOK_NUM, 1.0);
-        Tok expected2 = new Tok(Tok.Tokid.TOK_NUM, 2.0);
-        Tok expected3 = new Tok(Tok.Tokid.TOK_NUM, 1.0);
+        Token expected1 = new Token(Token.TokenId.TOK_NUM, 1.0);
+        Token expected2 = new Token(Token.TokenId.TOK_NUM, 2.0);
+        Token expected3 = new Token(Token.TokenId.TOK_NUM, 1.0);
 
         assertEquals(expected1, expected3);
 
@@ -30,7 +30,7 @@ public class TokTest {
      */
     @Test
     public void testGetNum() {
-        Tok expected1 = new Tok(Tok.Tokid.TOK_NUM, 1.0);
+        Token expected1 = new Token(Token.TokenId.TOK_NUM, 1.0);
 
         assertEquals(1.0, expected1.getNum(), 0.0);
     }
@@ -40,7 +40,7 @@ public class TokTest {
      */
     @Test
     public void testGetOp() {
-        Tok expected1 = new Tok(Tok.Tokid.TOK_OP, '+');
+        Token expected1 = new Token(Token.TokenId.TOK_OP, '+');
 
         assertEquals((int)'+', expected1.getOp());
     }
@@ -50,11 +50,11 @@ public class TokTest {
      */
     @Test
     public void testGetId() {
-        Tok expected1 = new Tok(Tok.Tokid.TOK_OP, '+');
-        Tok expected2 = new Tok(Tok.Tokid.TOK_NUM, 1.0);
+        Token expected1 = new Token(Token.TokenId.TOK_OP, '+');
+        Token expected2 = new Token(Token.TokenId.TOK_NUM, 1.0);
 
-        assertEquals(Tok.Tokid.TOK_NUM, expected2.getId());
-        assertEquals(Tok.Tokid.TOK_OP, expected1.getId());
+        assertEquals(Token.TokenId.TOK_NUM, expected2.getId());
+        assertEquals(Token.TokenId.TOK_OP, expected1.getId());
 }
 
     /**
@@ -62,7 +62,7 @@ public class TokTest {
      */
     @Test
     public void testSetNum() {
-        Tok expected1 = new Tok(Tok.Tokid.TOK_NUM, 1.0);
+        Token expected1 = new Token(Token.TokenId.TOK_NUM, 1.0);
 
         assertEquals(1.0, expected1.getNum(), 0.0);
 

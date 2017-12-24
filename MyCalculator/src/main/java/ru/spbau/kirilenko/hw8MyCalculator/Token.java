@@ -3,20 +3,20 @@ package ru.spbau.kirilenko.hw8MyCalculator;
 /**
  * A class that represent a token in expression
  */
-public class Tok {
+public class Token {
 
-    public enum Tokid { TOK_OP, TOK_NUM };
+    public enum TokenId { TOK_OP, TOK_NUM };
 
-    private Tokid id;
-    private double num = 0;
-    private int op = 0;
+    private TokenId id;
+    private double num;
+    private int op;
 
     /**
      * Constructs a token with id and value
      * @param id id of token
      * @param num new value
      */
-    public Tok(Tok.Tokid id, double num) {
+    public Token(TokenId id, double num) {
         this.id = id;
         this.num = num;
     }
@@ -26,7 +26,7 @@ public class Tok {
      * @param id id of token
      * @param op new operation
      */
-    public Tok(Tok.Tokid id, int op) {
+    public Token(TokenId id, int op) {
         this.id = id;
         this.op = op;
     }
@@ -38,13 +38,13 @@ public class Tok {
      */
     @Override
     public boolean equals(Object other) {
-        if (this.id != ((Tok)other).id) {
+        if (this.id != ((Token)other).id) {
             return false;
         } else {
-            if (this.id == Tokid.TOK_NUM) {
-                return this.num == ((Tok)other).num;
+            if (this.id == TokenId.TOK_NUM) {
+                return this.num == ((Token)other).num;
             } else {
-                return this.op == ((Tok)other).op;
+                return this.op == ((Token)other).op;
             }
         }
     }
@@ -55,7 +55,7 @@ public class Tok {
      * @throws IllegalStateException if token is not a number
      */
     public double getNum() throws IllegalStateException {
-        if (this.id == Tokid.TOK_OP) {
+        if (this.id == TokenId.TOK_OP) {
             throw new IllegalStateException("Not a number!");
         }
         return this.num;
@@ -67,7 +67,7 @@ public class Tok {
      * @throws IllegalStateException if token is not an operation
      */
     public int getOp() throws IllegalStateException {
-        if (this.id == Tokid.TOK_NUM) {
+        if (this.id == TokenId.TOK_NUM) {
             throw new IllegalStateException("Not an operation!");
         }
         return this.op;
@@ -77,7 +77,7 @@ public class Tok {
      * Returns id of token
      * @return returns id of token
      */
-    public Tokid getId() {
+    public TokenId getId() {
         return this.id;
     }
 
@@ -87,7 +87,7 @@ public class Tok {
      * @throws IllegalStateException if token is not a number
      */
     public void setNum(double newNum) throws IllegalStateException {
-        if (this.id == Tokid.TOK_OP) {
+        if (this.id == TokenId.TOK_OP) {
             throw new IllegalStateException("Not a number!");
         }
        this.num = newNum;

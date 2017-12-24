@@ -3,16 +3,16 @@ package ru.spbau.kirilenko.hw8MyCalculator;
 /**
  * A class that represents a simple queue structure
  */
-public class MyQueue {
+public class TokenQueue {
 
-    private Node head = null;
-    private Node tail = null;
+    private Node head;
+    private Node tail;
 
     /**
      * Method that push element to the end of the queue
      * @param t new element
      */
-    public void push(Tok t) {
+    public void push(Token t) {
         if (head == null) {
             Node newNode = new Node(t, null);
             head = newNode;
@@ -27,16 +27,16 @@ public class MyQueue {
     /**
      * Method that drop first element of queue
      */
-    public Tok pop() {
+    public Token pop() {
         if (head == null) {
             return null;
         } else if (head == tail) {
-            Tok result = head.tok;
+            Token result = head.token;
             head = null;
             tail = null;
             return result;
         } else {
-            Tok result = head.tok;
+            Token result = head.token;
             head = head.next;
             return result;
         }
@@ -50,13 +50,13 @@ public class MyQueue {
         return head == null;
     }
 
-    private class Node {
-        Tok tok = null;
-        Node next = null;
+    private static class Node {
+        private Token token;
+        private Node next;
 
-        Node(Tok tok, Node next) {
+        Node(Token token, Node next) {
             this.next = next;
-            this.tok = tok;
+            this.token = token;
         }
     }
 

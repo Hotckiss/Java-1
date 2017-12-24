@@ -3,14 +3,14 @@ package ru.spbau.kirilenko.hw8MyCalculator;
 /**
  * A class that represents a simple stack structure
  */
-public class MyStack {
+public class TokenStack {
     private Node top = null;
 
     /**
      * Method that push element to the top of the stack
      * @param t new element
      */
-    public void push(Tok t) {
+    public void push(Token t) {
         Node newNode = new Node(t, top);
         top = newNode;
     }
@@ -18,11 +18,11 @@ public class MyStack {
     /**
      * Method that drop top element of stack
      */
-    public Tok pop() {
+    public Token pop() {
         if (top == null) {
             return null;
         } else {
-            Tok result = top.tok;
+            Token result = top.token;
             top = top.next;
             return result;
         }
@@ -31,11 +31,11 @@ public class MyStack {
     /**
      * Method that shows top element of stack
      */
-    public Tok top() {
+    public Token top() {
         if (top == null) {
             return null;
         }
-        return top.tok;
+        return top.token;
     }
 
     /**
@@ -46,13 +46,13 @@ public class MyStack {
         return top == null;
     }
 
-    private class Node {
-        Tok tok = null;
-        Node next = null;
+    private static class Node {
+        private Token token;
+        private Node next;
 
-        Node(Tok tok, Node next) {
+        Node(Token token, Node next) {
             this.next = next;
-            this.tok = tok;
+            this.token = token;
         }
     }
 

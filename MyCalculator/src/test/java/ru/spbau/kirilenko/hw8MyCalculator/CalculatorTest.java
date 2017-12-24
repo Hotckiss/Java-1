@@ -16,29 +16,29 @@ public class CalculatorTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testParserMockTest() {
-        MyQueue mockedQueueTokens = mock(MyQueue.class);
-        MyStack mockedStackOperands = mock(MyStack.class);
-        MyStack mockedStackOperators = mock(MyStack.class);
+        TokenQueue mockedQueueTokens = mock(TokenQueue.class);
+        TokenStack mockedStackOperands = mock(TokenStack.class);
+        TokenStack mockedStackOperators = mock(TokenStack.class);
 
         when(mockedQueueTokens.pop())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 1.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 3.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)')'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 4.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 1.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 3.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)')'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 4.0))
                 .thenReturn(null);
 
         when(mockedStackOperators.pop())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 1.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 3.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 4.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'));
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 1.0))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 3.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 4.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'));
 
         when(mockedStackOperators.empty())
                 .thenReturn(false)
@@ -56,18 +56,18 @@ public class CalculatorTest {
                 .thenReturn(true);
 
         when(mockedStackOperators.top())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
                 .thenReturn(null);
 
         when(mockedStackOperands.pop())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 4.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 3.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 1.0));
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 4.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 3.0))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 1.0));
 
 
         when(mockedStackOperands.empty())
@@ -79,12 +79,12 @@ public class CalculatorTest {
                 .thenReturn(true);
 
         Calculator calculator = new Calculator(mockedStackOperands, mockedStackOperators);
-        MyQueue inversed = calculator.parseExpr(mockedQueueTokens);
+        TokenQueue inversed = calculator.parseExpr(mockedQueueTokens);
         StringBuilder sb = new StringBuilder();
 
         while (!inversed.empty()) {
-            Tok token = inversed.pop();
-            if (token.getId() == Tok.Tokid.TOK_OP) {
+            Token token = inversed.pop();
+            if (token.getId() == Token.TokenId.TOK_OP) {
                 sb.append((char)token.getOp());
             } else {
                 sb.append(token.getNum());
@@ -103,29 +103,29 @@ public class CalculatorTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testEvaluateMockTest() {
-        MyQueue mockedQueueTokens = mock(MyQueue.class);
-        MyStack mockedStackOperands = mock(MyStack.class);
-        MyStack mockedStackOperators = mock(MyStack.class);
+        TokenQueue mockedQueueTokens = mock(TokenQueue.class);
+        TokenStack mockedStackOperands = mock(TokenStack.class);
+        TokenStack mockedStackOperators = mock(TokenStack.class);
 
         when(mockedQueueTokens.pop())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 1.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 5.5))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)')'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 4.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 1.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 5.5))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)')'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 4.0))
                 .thenReturn(null);
 
         when(mockedStackOperators.pop())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 1.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 5.5))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 4.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'));
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 1.0))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 5.5))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 4.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'));
 
         when(mockedStackOperators.empty())
                 .thenReturn(false)
@@ -143,18 +143,18 @@ public class CalculatorTest {
                 .thenReturn(true);
 
         when(mockedStackOperators.top())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'('))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'('))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
                 .thenReturn(null);
 
         when(mockedStackOperands.pop())
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'*'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 4.0))
-                .thenReturn(new Tok(Tok.Tokid.TOK_OP, (int)'+'))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 5.5))
-                .thenReturn(new Tok(Tok.Tokid.TOK_NUM, 1.0));
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'*'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 4.0))
+                .thenReturn(new Token(Token.TokenId.TOK_OP, (int)'+'))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 5.5))
+                .thenReturn(new Token(Token.TokenId.TOK_NUM, 1.0));
 
 
         when(mockedStackOperands.empty())
@@ -166,7 +166,7 @@ public class CalculatorTest {
                 .thenReturn(true);
 
         Calculator calculator = new Calculator(mockedStackOperands, mockedStackOperators);
-        MyQueue inversed = calculator.parseExpr(mockedQueueTokens);
+        TokenQueue inversed = calculator.parseExpr(mockedQueueTokens);
         assertEquals(26.0, calculator.eval(inversed), 0.0);
         verify(mockedStackOperators, times(8)).push(anyObject());
     }
@@ -180,18 +180,9 @@ public class CalculatorTest {
     public void testScannerStandartTest() {
         Calculator calculator = new Calculator();
         String expr = "(1+2)*3 - 4 *((((5)+6)))-7.5/15+111";
-        MyQueue parsed = calculator.scanner(expr);
+        TokenQueue parsed = calculator.scanner(expr);
 
-        StringBuilder sb = new StringBuilder();
-        while (!parsed.empty()) {
-            Tok token = parsed.pop();
-            if (token.getId() == Tok.Tokid.TOK_OP) {
-                sb.append((char)token.getOp());
-            } else {
-                sb.append(token.getNum());
-            }
-        }
-        assertEquals("(1.0+2.0)*3.0-4.0*((((5.0)+6.0)))-7.5/15.0+111.0", sb.toString());
+        assertEquals("( 1.0 + 2.0 ) * 3.0 - 4.0 * ( ( ( ( 5.0 ) + 6.0 ) ) ) - 7.5 / 15.0 + 111.0 ", getAnswer(parsed));
     }
 
     /**
@@ -200,13 +191,13 @@ public class CalculatorTest {
     @Test
     public void testEvalStandartTest() {
         Calculator calculator = new Calculator();
-        MyQueue inversed = new MyQueue();
+        TokenQueue inversed = new TokenQueue();
 
-        inversed.push(new Tok(Tok.Tokid.TOK_NUM, 1.0));
-        inversed.push(new Tok(Tok.Tokid.TOK_NUM, 2.0));
-        inversed.push(new Tok(Tok.Tokid.TOK_OP, (int)'+'));
-        inversed.push(new Tok(Tok.Tokid.TOK_NUM, 3.0));
-        inversed.push(new Tok(Tok.Tokid.TOK_OP, (int)'*'));
+        inversed.push(new Token(Token.TokenId.TOK_NUM, 1.0));
+        inversed.push(new Token(Token.TokenId.TOK_NUM, 2.0));
+        inversed.push(new Token(Token.TokenId.TOK_OP, (int)'+'));
+        inversed.push(new Token(Token.TokenId.TOK_NUM, 3.0));
+        inversed.push(new Token(Token.TokenId.TOK_OP, (int)'*'));
 
         assertEquals(9.0, calculator.eval(inversed), 0.0);
     }
@@ -218,21 +209,26 @@ public class CalculatorTest {
     public void testParserStandartTest() {
         Calculator calculator = new Calculator();
         String expr = "((1+2)*3 - 4   *(((5+6)))-7.5/15+111)";
-        MyQueue parsed = calculator.scanner(expr);
+        TokenQueue parsed = calculator.scanner(expr);
 
-        MyQueue inversed = calculator.parseExpr(parsed);
-        StringBuilder sb = new StringBuilder();
-        while (!inversed.empty()) {
-            Tok token = inversed.pop();
-            if (token.getId() == Tok.Tokid.TOK_OP) {
-                sb.append((char)token.getOp());
-            } else {
-                sb.append(token.getNum());
-            }
-            sb.append(" ");
-        }
+        TokenQueue inversed = calculator.parseExpr(parsed);
 
-        assertEquals("1.0 2.0 + 3.0 * 4.0 5.0 6.0 + * - 7.5 15.0 / - 111.0 + ", sb.toString());
+        assertEquals("1.0 2.0 + 3.0 * 4.0 5.0 6.0 + * - 7.5 15.0 / - 111.0 + ", getAnswer(inversed));
     }
 
+    private String getAnswer(TokenQueue tokenQueue) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        while (!tokenQueue.empty()) {
+            Token token = tokenQueue.pop();
+            if (token.getId() == Token.TokenId.TOK_OP) {
+                stringBuilder.append((char)token.getOp());
+            } else {
+                stringBuilder.append(token.getNum());
+            }
+            stringBuilder.append(" ");
+        }
+
+        return stringBuilder.toString();
+    }
 }

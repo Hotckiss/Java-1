@@ -6,8 +6,8 @@ package ru.spbau.kirilenko.hw8MyCalculator;
  */
 public class Calculator {
 
-    private MyStack operands = null;
-    private MyStack operators = null;
+    private TokenStack operands = null;
+    private TokenStack operators = null;
 
     private enum State { WAIT_PREFIX, WAIT_SUFFIX, PARSE_ERROR, DONE, END }
 
@@ -17,7 +17,7 @@ public class Calculator {
             return;
         }
 
-        Calculator calculator = new Calculator(new MyStack(), new MyStack());
+        Calculator calculator = new Calculator(new TokenStack(), new TokenStack());
         String input = args[0];
 
         double answer = calculator.eval(calculator.parseExpr(calculator.scanner(input)));
@@ -29,8 +29,8 @@ public class Calculator {
      * Simple constructor to standart calculation
      */
     public Calculator() {
-        this.operands = new MyStack();
-        this.operators = new MyStack();
+        this.operands = new TokenStack();
+        this.operators = new TokenStack();
     }
 
     /**
@@ -38,7 +38,7 @@ public class Calculator {
      * @param stackOperands stack of operands
      * @param stackOperators stack of operators
      */
-    public Calculator(MyStack stackOperands, MyStack stackOperators) {
+    public Calculator(TokenStack stackOperands, TokenStack stackOperators) {
         this.operands = stackOperands;
         this.operators = stackOperators;
     }
@@ -49,60 +49,36 @@ public class Calculator {
      * @param expr input string
      * @return queue of tokens
      */
-    public MyQueue scanner(String expr) {
-        Tok t;
-        MyQueue result = new MyQueue();
+    public TokenQueue scanner(String expr) {
+        TokenQueue result = new TokenQueue();
         int i = 0;
         while (i < expr.length()) {
+            Token t;
             char ch = expr.charAt(i);
-            switch (ch) {
-                case ' ':
-                case '\n':
-                case '\t':
-                case '\r':
+            if (" \n\t\r".indexOf(ch) != -1) {
+                i++;
+                continue;
+            } else if ("+-*/%^()".indexOf(ch) != -1) {
+                t = new Token(Token.TokenId.TOK_OP, (int)ch);
+                i++;
+            } else if (Character.isDigit(ch)) {
+                t = new Token(Token.TokenId.TOK_NUM, (double)(ch - '0'));
+                i++;
+                while (i < expr.length() && isDigit(expr.charAt(i))) {
+                    t.setNum(t.getNum() * 10 + (expr.charAt(i) - '0'));
                     i++;
-                    continue;
-                case '+':
-                case '-':
-                case '*':
-                case '/':
-                case '%':
-                case '^':
-                case '(':
-                case ')':
-                    t = new Tok(Tok.Tokid.TOK_OP, (int)ch);
+                }
+                if (i < expr.length() && (expr.charAt(i) == '.')) {
                     i++;
-                    break;
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    t = new Tok(Tok.Tokid.TOK_NUM, (double)(ch - '0'));
-                    i++;
+                    int denum = 1;
                     while (i < expr.length() && isDigit(expr.charAt(i))) {
-                        t.setNum(t.getNum() * 10 + (expr.charAt(i) - '0'));
+                        denum *= 10;
+                        t.setNum(t.getNum() + ((double)(expr.charAt(i) - '0')) / denum);
                         i++;
                     }
-                    if (i < expr.length() && (expr.charAt(i) == '.')) {
-                        i++;
-                        int denum = 1;
-                        while (i < expr.length() && isDigit(expr.charAt(i))) {
-                            denum *= 10;
-                            t.setNum(t.getNum() + ((double)(expr.charAt(i) - '0')) / denum);
-                            i++;
-                        }
-                    }
-
-                    break;
-                default:
-                    throw new IllegalArgumentException("Parse error on symbol: " + ((Character)expr.charAt(i)).toString());
-
+                }
+            } else {
+                throw new IllegalArgumentException("Parse error on symbol: " + ((Character)expr.charAt(i)).toString());
             }
             result.push(t);
         }
@@ -110,23 +86,20 @@ public class Calculator {
     }
 
     /**
-     * Method that evaluates expressino in reversed polish notation
+     * Method that evaluates expression in reversed polish notation
      * @param tokens queue of tokens
      * @return calculated value
      */
-    public double eval(MyQueue tokens) {
-        MyStack stack = new MyStack();
-        Tok t;
-        Tok a;
-        Tok b;
+    public double eval(TokenQueue tokens) {
+        TokenStack stack = new TokenStack();
         while (!tokens.empty()) {
-            t = tokens.pop();
-            if (t.getId() == Tok.Tokid.TOK_NUM) {
+            Token t = tokens.pop();
+            if (t.getId() == Token.TokenId.TOK_NUM) {
                 stack.push(t);
             }
 		    else {
-                b = stack.pop();
-                a = stack.pop();
+                Token a = stack.pop();
+                Token b = stack.pop();
                 switch ((char)t.getOp())
                 {
                     case '+':
@@ -168,9 +141,9 @@ public class Calculator {
      * @param inputTokens queue of input tokens
      * @return queue of tokens in polish notation order
      */
-    public MyQueue parseExpr(MyQueue inputTokens) {
-        MyQueue queueResult = new MyQueue();
-        Tok t = new Tok(Tok.Tokid.TOK_NUM, 0.0);
+    public TokenQueue parseExpr(TokenQueue inputTokens) {
+        TokenQueue queueResult = new TokenQueue();
+        Token t = new Token(Token.TokenId.TOK_NUM, 0.0);
 
         State state = State.WAIT_PREFIX;
 
@@ -178,30 +151,28 @@ public class Calculator {
             if (state.ordinal() < State.PARSE_ERROR.ordinal()) {
                 t = inputTokens.pop();
                 if (t == null){
-                    if (state.ordinal() == State.WAIT_SUFFIX.ordinal()) {
+                    if (state == State.WAIT_SUFFIX) {
                         state = State.DONE;
                     } else {
-                        state = State.PARSE_ERROR;
                         throw new IllegalStateException("Unexpected ending.");
                     }
                 }
             }
             switch (state) {
                 case WAIT_PREFIX:
-                    if (t.getId() == Tok.Tokid.TOK_OP && t.getOp() == (int)'(') {
+                    if (t.getId() == Token.TokenId.TOK_OP && t.getOp() == (int)'(') {
                         operators.push(t);
                     }
-                    else if (t.getId() == Tok.Tokid.TOK_NUM) {
+                    else if (t.getId() == Token.TokenId.TOK_NUM) {
                         operands.push(t);
                         state = State.WAIT_SUFFIX;
 
                     } else {
-                        state = State.PARSE_ERROR;
                         throw new IllegalStateException("Wait number or '('");
                     }
                     break;
                 case WAIT_SUFFIX:
-                    if (t.getId() == Tok.Tokid.TOK_OP && t.getOp() != (int)'(') {
+                    if (t.getId() == Token.TokenId.TOK_OP && t.getOp() != (int)'(') {
                         dropOpers(operands, operators, getPriority(t.getOp()));
                         if (t.getOp() != (int)')') {
                             operators.push(t);
@@ -209,12 +180,10 @@ public class Calculator {
                         } else {
                             t = operators.pop();
                             if (t == null) {
-                                state = State.PARSE_ERROR;
                                 throw new IllegalStateException("Missing '('");
                             }
                         }
                     } else {
-                        state = State.PARSE_ERROR;
                         throw new IllegalStateException("Wait operator or ')'");
                     }
                     break;
@@ -235,7 +204,6 @@ public class Calculator {
                         state = State.END;
                     }
                     else {
-                        state = State.PARSE_ERROR;
                         throw new IllegalStateException("Waiting for ')'");
                     }
                     break;
@@ -263,10 +231,9 @@ public class Calculator {
         return -1;
     }
 
-    private void dropOpers(MyStack destination, MyStack source, int prior) {
+    private void dropOpers(TokenStack destination, TokenStack source, int prior) {
         while (!source.empty() && getPriority(source.top().getOp()) >= prior) {
-            Tok t;
-            t = source.pop();
+            Token t = source.pop();
             destination.push(t);
         }
     }
