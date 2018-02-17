@@ -1,20 +1,7 @@
 sudo: false
 language: java
 before_install:
-    - chmod +x AdvancedHashTable/gradlew
-    - chmod +x Cw2/gradlew
     - chmod +x HashTable/gradlew
-    - chmod +x HashMap2/gradlew
 script:
-    - cd AdvancedHashTable
+    - cd HashTable
     - ./gradlew build
-    - cd ..
-    - cd Cw2
-    - ./gradlew build
-    - cd ..
-    - cd hashTable
-    - ./gradlew build
-    - cd ..
-    - cd HashMap2
-    - ./gradlew build
-    - cd ..
