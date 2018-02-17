@@ -1,7 +1,20 @@
+sudo:false
 language: java
-jdk:
-  - oraclejdk8
-os:
-  - linux
+before_install:
+    - chmod +x AdvancedHashTable/gradlew
+    - chmod +x Cw2/gradlew
+    - chmod +x HashTable/gradlew
+    - chmod +x HashMap2/gradlew
 script:
-  - mvn test
+    - cd AdvancedHashTable
+    - ./gradlew build
+    - cd ..
+    - cd Cw2
+    - ./gradlew build
+    - cd ..
+    - cd hashTable
+    - ./gradlew build
+    - cd ..
+    - cd HashMap2
+    - ./gradlew build
+    - cd ..
